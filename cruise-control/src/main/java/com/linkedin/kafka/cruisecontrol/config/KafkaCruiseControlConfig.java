@@ -18,7 +18,7 @@ import com.linkedin.kafka.cruisecontrol.analyzer.goals.RackAwareGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.ReplicaCapacityGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.ReplicaDistributionGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicReplicaDistributionGoal;
-import com.linkedin.kafka.cruisecontrol.detector.NoopMetricAnomalyAnalyzer;
+import com.linkedin.kafka.cruisecontrol.detector.NoopMetricAnomalyFinder;
 import com.linkedin.kafka.cruisecontrol.detector.notifier.NoopNotifier;
 import com.linkedin.kafka.cruisecontrol.monitor.sampling.CruiseControlMetricsReporterSampler;
 import com.linkedin.kafka.cruisecontrol.monitor.sampling.DefaultMetricSamplerPartitionAssignor;
@@ -44,7 +44,7 @@ public class KafkaCruiseControlConfig extends AbstractConfig {
   private static final String DEFAULT_FAILED_BROKERS_ZK_PATH = "/CruiseControlBrokerList";
   // We have to define this so we don't need to move every package to scala src folder.
   private static final String DEFAULT_ANOMALY_NOTIFIER_CLASS = NoopNotifier.class.getName();
-  private static final String DEFAULT_METRIC_ANOMALY_ANALYZER_CLASS = NoopMetricAnomalyAnalyzer.class.getName();
+  private static final String DEFAULT_METRIC_ANOMALY_ANALYZER_CLASS = NoopMetricAnomalyFinder.class.getName();
 
   private static final ConfigDef CONFIG;
 

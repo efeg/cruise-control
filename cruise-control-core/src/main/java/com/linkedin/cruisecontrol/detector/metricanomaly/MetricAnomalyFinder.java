@@ -2,7 +2,7 @@
  * Copyright 2018 LinkedIn Corp. Licensed under the BSD 2-Clause License (the "License"). See License in the project root for license information.
  */
 
-package com.linkedin.cruisecontrol.detector;
+package com.linkedin.cruisecontrol.detector.metricanomaly;
 
 import com.linkedin.cruisecontrol.model.Entity;
 import com.linkedin.cruisecontrol.monitor.sampling.aggregator.ValuesAndExtrapolations;
@@ -11,7 +11,7 @@ import java.util.Map;
 import org.apache.kafka.common.Configurable;
 
 
-public interface MetricAnomalyAnalyzer<E extends Entity, M extends MetricAnomaly> extends Configurable {
+public interface MetricAnomalyFinder<E extends Entity> extends Configurable {
 
   /**
    * Get a collection of metric anomalies for entities if an anomaly in their current aggregated metrics values is
@@ -22,6 +22,6 @@ public interface MetricAnomalyAnalyzer<E extends Entity, M extends MetricAnomaly
    * @return A collection of metric anomalies for entities if an anomaly in their current aggregated metrics values is
    * detected for their metric ids, based on their history.
    */
-  public Collection<M> metricAnomalies(Map<E, ValuesAndExtrapolations> metricsHistoryByEntity,
-                                       Map<E, ValuesAndExtrapolations> currentMetricsByEntity);
+  Collection<MetricAnomaly<E>> metricAnomalies(Map<E, ValuesAndExtrapolations> metricsHistoryByEntity,
+                                               Map<E, ValuesAndExtrapolations> currentMetricsByEntity);
 }

@@ -18,6 +18,7 @@ import com.linkedin.kafka.cruisecontrol.analyzer.goals.RackAwareGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.ReplicaCapacityGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.ReplicaDistributionGoal;
 import com.linkedin.kafka.cruisecontrol.analyzer.goals.TopicReplicaDistributionGoal;
+import com.linkedin.kafka.cruisecontrol.detector.NoopMetricAnomalyFinder;
 import com.linkedin.kafka.cruisecontrol.detector.notifier.NoopNotifier;
 import com.linkedin.kafka.cruisecontrol.monitor.sampling.CruiseControlMetricsReporterSampler;
 import com.linkedin.kafka.cruisecontrol.monitor.sampling.DefaultMetricSamplerPartitionAssignor;
@@ -43,6 +44,7 @@ public class KafkaCruiseControlConfig extends AbstractConfig {
   private static final String DEFAULT_FAILED_BROKERS_ZK_PATH = "/CruiseControlBrokerList";
   // We have to define this so we don't need to move every package to scala src folder.
   private static final String DEFAULT_ANOMALY_NOTIFIER_CLASS = NoopNotifier.class.getName();
+  private static final String DEFAULT_METRIC_ANOMALY_ANALYZER_CLASS = NoopMetricAnomalyFinder.class.getName();
 
   private static final ConfigDef CONFIG;
 
@@ -369,6 +371,13 @@ public class KafkaCruiseControlConfig extends AbstractConfig {
   private static final String NETWORK_OUTBOUND_LOW_UTILIZATION_THRESHOLD_DOC = "The threshold for Kafka Cruise Control to define " +
       "the utilization of network outbound rate is low enough that rebalance is not worthwhile. The cluster will only be in a low " +
       "utilization state when all the brokers are below the low utilization threshold. The threshold is in percentage.";
+
+  /**
+   * <code>metric.anomaly.analyzer.class</code>
+   */
+  public static final String METRIC_ANOMALY_ANALYZER_CLASSES_CONFIG = "metric.anomaly.analyzer.class";
+  private static final String METRIC_ANOMALY_ANALYZER_CLASSES_DOC = "A list of metric anomaly analyzer classes to analyze "
+                                                                    + "the current state to identify metric anomalies.";
 
   /**
    * <code>max.proposal.candidates</code>
@@ -733,6 +742,10 @@ public class KafkaCruiseControlConfig extends AbstractConfig {
                 between(0, 1),
                 ConfigDef.Importance.MEDIUM,
                 NETWORK_OUTBOUND_LOW_UTILIZATION_THRESHOLD_DOC)
+        .define(METRIC_ANOMALY_ANALYZER_CLASSES_CONFIG,
+                ConfigDef.Type.LIST,
+                DEFAULT_METRIC_ANOMALY_ANALYZER_CLASS,
+                ConfigDef.Importance.MEDIUM, METRIC_ANOMALY_ANALYZER_CLASSES_DOC)
         .define(MAX_PROPOSAL_CANDIDATES_CONFIG,
                 ConfigDef.Type.INT,
                 10,
